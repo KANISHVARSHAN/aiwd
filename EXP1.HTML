@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Event Registration & Promotional Portal</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background:#f5f7fb; color:#222; }
+    header { background:#1f6feb; color:#fff; padding:20px 16px; text-align:center; }
+    .container { max-width:900px; margin:24px auto; background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08); overflow:hidden; }
+    .media { padding:16px; display:flex; flex-direction:column; gap:12px; align-items:center; }
+    img.banner { width:100%; height:auto; border-radius:6px; max-height:320px; object-fit:cover; }
+    .content { padding:16px; display:flex; gap:24px; flex-wrap:wrap; }
+    form { flex:1 1 380px; min-width:280px; }
+    .info { flex:1 1 380px; min-width:260px; background:#f0f6ff; padding:12px; border-radius:6px; }
+    label { display:block; margin-top:12px; font-weight:600; }
+    input[type="text"], input[type="email"], input[type="date"], select, textarea, input[type="file"] {
+      width:100%; padding:8px; margin-top:6px; border:1px solid #cfd8e3; border-radius:4px; box-sizing:border-box;
+    }
+    .radio-group { display:flex; gap:12px; margin-top:6px; align-items:center; }
+    textarea { min-height:100px; resize:vertical; }
+    button[type="submit"] { background:#1f6feb; color:#fff; border:none; padding:10px 16px; border-radius:6px; cursor:pointer; margin-top:14px; font-weight:700; }
+    .required { color:#d00; margin-left:4px; }
+    .small { font-size:0.9rem; color:#444; margin-top:8px; }
+    .success { background:#e6ffef; border-left:4px solid #1fb97f; padding:8px; margin-top:12px; border-radius:4px; }
+    footer { text-align:center; padding:12px; color:#666; font-size:0.9rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>KITS 2026 — Event Registration</h1>
+  </header>
+
+  <main class="container" role="main">
+    <section class="media" aria-label="Promotional media">
+      <img class="banner" src="banner.jpg" alt="KITS 2026 Banner" />
+      <video controls width="720" preload="metadata" aria-label="Promotional video">
+        <source src="promo.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <audio controls preload="auto" aria-label="Intro audio">
+        <source src="intro.mp3" type="audio/mpeg" />
+        Your browser does not support the audio tag.
+      </audio>
+    </section>
+
+    <section class="content" aria-label="Event registration and details">
+      <form id="regForm" novalidate>
+        <h2>Register for TechConnect 2026</h2>
+
+        <label for="fullName">Full Name<span class="required">*</span></label>
+        <input id="fullName" name="fullName" type="text" required />
+
+        <label for="email">Email Address<span class="required">*</span></label>
+        <input id="email" name="email" type="email" required />
+
+        <label for="dob">Date of Birth</label>
+        <input id="dob" name="dob" type="date" />
+
+        <label>Attendance Type<span class="required">*</span></label>
+        <div class="radio-group" role="radiogroup" aria-label="attendance type">
+          <label><input type="radio" name="attendance" value="inperson" required /> In-person</label>
+          <label><input type="radio" name="attendance" value="virtual" /> Virtual</label>
+        </div>
+
+        <label for="ticket">Ticket Package<span class="required">*</span></label>
+        <select id="ticket" name="ticket" required>
+          <option value="">-- Select a package --</option>
+          <option value="standard">Standard — Access to talks</option>
+          <option value="workshop">Workshop Pass — Talks + Workshops</option>
+          <option value="vip">VIP — All access + Networking</option>
+        </select>
+
+        <label for="bio">Short Bio / Expectations</label>
+        <textarea id="bio" name="bio" placeholder="Tell us about your background or what you hope to learn"></textarea>
+
+        <label for="photo" class="required">Upload Profile Photo</label>
+        <input id="photo" name="photo" type="file" accept="image/*" />
+
+        <div class="small">By submitting you agree to receive event updates via email.</div>
+
+        <button type="submit">Submit Registration</button>
+
+        <div id="result" role="status" aria-live="polite"></div>
+      </form>
+
+      <aside class="info" aria-label="Event information">
+        <h3>Event Details</h3>
+        <p><strong>Date:</strong> March 25-27, 2026</p>
+        <p><strong>Venue:</strong> Karunya Nagar,Coimbatore,641114</p>
+        <p><strong>Highlights:</strong></p>
+        <ul>
+          <li>Mega Play</li>
+          <li>Minecarft</li>
+        </ul>
+        <h4>Contact</h4>
+        <p>Email: <a href="mailto:kanishvarshan@karunya.edu.in">kanishvarshan@karunya.edu.in</a></p>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2026 TechConnect. All rights reserved.
+  </footer>
+
+  <script>
+    const form = document.getElementById('regForm');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      result.textContent = '';
+      result.className = '';
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const data = new FormData(form);
+      const payload = {
+        fullName: data.get('fullName'),
+        email: data.get('email'),
+        dob: data.get('dob'),
+        attendance: data.get('attendance'),
+        ticket: data.get('ticket'),
+        bio: data.get('bio'),
+        photo: data.get('photo') ? data.get('photo').name : null
+      };
+
+      result.className = 'success';
+      result.textContent = 'Registration submitted successfully. Check console for submitted payload.';
+      console.log('Submitted payload:', payload);
+      form.reset();
+    }, false);
+  </script>
+</body>
+</html>
