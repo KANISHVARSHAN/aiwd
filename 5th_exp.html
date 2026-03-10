@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quiz & Event Countdown</title>
+  <style>
+    body{font-family:Arial,sans-serif;margin:0;padding:0;background:#f0f4f8;color:#333;}
+    .container{max-width:800px;margin:40px auto;padding:20px;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+    h1,h2{color:#0056b3;}
+    .timer, .countdown{font-weight:700;margin:10px 0;color:#d32f2f;}
+    .warning{color:#c62828;font-weight:700;}
+    form p{margin:12px 0;}
+    label{display:block;margin-left:20px;}
+    button{margin-top:16px;padding:10px 20px;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;}
+    button:disabled{background:#ccc;cursor:not-allowed;}
+    #score{margin-top:20px;font-size:1.2rem;color:#2e7d32;}
+    #countdownDisplay{font-size:1.1rem;color:#d84315;}
+    table{width:100%;border-collapse:collapse;margin-top:24px;}
+    th,td{border:1px solid #ccc;padding:6px;text-align:left;}
+    th{background:#e3f2fd;}
+  </style>
+</head>
+<body onload="startQuiz(); startCountdown();">
+  <div class="container">
+    <h1>JavaScript Quiz Application (10s)</h1>
+    <div class="timer" id="quizTimer">Time left: 10</div>
+    <div class="warning" id="warningMsg"></div>
+    <form id="quizForm">
+      <p>1. Capital of France?<br>
+        <label><input type="radio" name="q1" value="Paris"> Paris</label>
+        <label><input type="radio" name="q1" value="Rome"> Rome</label>
+        <label><input type="radio" name="q1" value="Berlin"> Berlin</label>
+      </p>
+      <p>2. 2 + 2 =?<br>
+        <label><input type="radio" name="q2" value="3"> 3</label>
+        <label><input type="radio" name="q2" value="4"> 4</label>
+        <label><input type="radio" name="q2" value="5"> 5</label>
+      </p>
+      <p>3. JavaScript runs in?<br>
+        <label><input type="radio" name="q3" value="Browser"> Browser</label>
+        <label><input type="radio" name="q3" value="Server"> Server</label>
+        <label><input type="radio" name="q3" value="Database"> Database</label>
+      </p>
+      <p>4. CSS stands for?<br>
+        <label><input type="radio" name="q4" value="Cascading Style Sheets"> Cascading Style Sheets</label>
+        <label><input type="radio" name="q4" value="Computer Style Sheets"> Computer Style Sheets</label>
+        <label><input type="radio" name="q4" value="Creative Style Sheets"> Creative Style Sheets</label>
+      </p>
+      <p>5. HTML stands for?<br>
+        <label><input type="radio" name="q5" value="HyperText Markup Language"> HyperText Markup Language</label>
+        <label><input type="radio" name="q5" value="Home Tool Markup Language"> Home Tool Markup Language</label>
+        <label><input type="radio" name="q5" value="Hyperlink Text Markup Language"> Hyperlink Text Markup Language</label>
+      </p>
+      <button type="submit">Submit</button>
+    </form>
+    <div id="score"></div>
+
+    <hr>
+    <h2>Event Countdown Timer</h2>
+    <div id="countdownDisplay" class="countdown"></div>
+  </div>
+
+  <script>
+    // quiz logic
+    let quizInterval;
+    let timeLeft = 10;
+    const answers = {q1:'Paris',q2:'4',q3:'Browser',q4:'Cascading Style Sheets',q5:'HyperText Markup Language'};
+
+    function startQuiz(){
+      document.getElementById('quizTimer').textContent = 'Time left: ' + timeLeft;
+      quizInterval = setInterval(tick,1000);
+      const form = document.getElementById('quizForm');
+      form.onsubmit = function(e){ e.preventDefault(); submitQuiz(); };
+    }
+    function tick(){
+      timeLeft--;
+      document.getElementById('quizTimer').textContent = 'Time left: ' + timeLeft;
+      if(timeLeft===5){ document.getElementById('warningMsg').textContent='Only 5 seconds remaining!'; }
+      if(timeLeft<=0){ clearInterval(quizInterval); submitQuiz(); }
+    }
+    function submitQuiz(){
+      clearInterval(quizInterval);
+      document.getElementById('quizTimer').textContent='Time left: 0';
+      disableOptions();
+      calculateScore();
+    }
+    function disableOptions(){
+      const opts = document.querySelectorAll('#quizForm input[type=radio]');
+      opts.forEach(o=>o.disabled=true);
+    }
+    function calculateScore(){
+      let score=0;
+      for(let i=1;i<=5;i++){
+        const sel = document.querySelector('input[name=q'+i+']:checked');
+        if(sel && sel.value===answers['q'+i]) score++;
+      }
+      document.getElementById('score').textContent='Final score: ' + score + ' / 5';
+    }
+
+    // countdown logic
+    let countdownInterval;
+    const eventDate = new Date();
+    eventDate.setDate(eventDate.getDate() + 2); // two days ahead for demo
+
+    function startCountdown(){
+      updateCountdown();
+      countdownInterval = setInterval(updateCountdown,1000);
+    }
+    function updateCountdown(){
+      const now = new Date();
+      let diff = eventDate - now;
+      if(diff<=0){ clearInterval(countdownInterval);
+        document.getElementById('countdownDisplay').textContent='Registration Closed';
+        return;
+      }
+      const days=Math.floor(diff/86400000);
+      diff %=86400000;
+      const hours=Math.floor(diff/3600000);
+      diff %=3600000;
+      const mins=Math.floor(diff/60000);
+      const secs=Math.floor((diff%60000)/1000);
+      document.getElementById('countdownDisplay').textContent=
+        days+'d '+hours+'h '+mins+'m '+secs+'s remaining';
+    }
+  </script>
+</body>
+</html>
