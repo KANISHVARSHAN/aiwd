@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cake Order Calculator</title>
+  <style>
+    body {font-family: Arial, sans-serif; margin:0; padding:0; background:#faf3e0;}
+    .container {max-width:600px; margin:40px auto; padding:20px; background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+    h1 {text-align:center; color:#d2691e;}
+    label {display:block; margin-top:12px; font-weight:600;}
+    input, select {width:100%; padding:8px; margin-top:6px; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;}
+    .extras {margin-top:10px;}
+    .extras label {font-weight:normal;}
+    button {margin-top:16px; width:100%; padding:10px; background:#d2691e; color:#fff; border:none; border-radius:4px; cursor:pointer;}
+    button:hover {background:#a0522d;}
+    #total {margin-top:20px; font-weight:700; color:#8b4513; text-align:center;}
+  </style>
+</head>
+<body onload="initPage()">
+  <div class="container">
+    <h1>Cake Order Calculator</h1>
+    <p id="demo" style="text-align:center; color:#b71c1c; font-weight:bold;">Click anywhere to trigger DOM event</p>
+    <form id="cakeForm">
+      <label for="flavor">Flavor</label>
+      <select id="flavor" onchange="updatePrice()">
+        <option value="vanilla" data-price="10">Vanilla ($10/kg)</option>
+        <option value="chocolate" data-price="12">Chocolate ($12/kg)</option>
+        <option value="redvelvet" data-price="15">Red Velvet ($15/kg)</option>
+        <option value="buttercream" data-price="11">Buttercream ($11/kg)</option>
+      </select>
+
+      <label for="weight">Weight (kg)</label>
+      <input type="number" id="weight" min="0.5" step="0.1" value="1" onkeyup="calculate()" onkeydown="calculate()" />
+
+      <div class="extras" onmouseover="highlightExtras()">
+        <label><input type="checkbox" class="extra" value="5" onchange="calculate()" /> Message (₹5)</label>
+        <label><input type="checkbox" class="extra" value="8" onchange="calculate()" /> Figurine (₹8)</label>
+        <label><input type="checkbox" class="extra" value="3" onchange="calculate()" /> Ribbon (₹3)</label>
+      </div>
+
+      <button type="submit">Calculate Total</button>
+    </form>
+    <div id="total"></div>
+  </div>
+
+  <script>
+    function initPage() {
+      const form = document.getElementById('cakeForm');
+      form.onsubmit = function(e){ e.preventDefault(); calculate(); };
+      updatePrice();
+      // extra DOM examples
+      const selects = document.getElementsByTagName('select');
+      console.log('flavor selects:', selects.length);
+      const extras = document.querySelectorAll('.extra');
+      extras.forEach(ch => ch.addEventListener('mousedown', () => console.log('extra clicked')));
+      document.addEventListener('click', function() {
+        document.getElementById('demo').innerHTML = 'Karunya';
+      });
+    }
+
+    function updatePrice() {
+      const sel = document.getElementById('flavor');
+      // show price in select option text or could use querySelector
+      const price = parseFloat(sel.options[sel.selectedIndex].dataset.price);
+      calculate();
+    }
+
+    function calculate() {
+      const weight = parseFloat(document.getElementById('weight').value) || 0;
+      const sel = document.getElementById('flavor');
+      const pricePerKg = parseFloat(sel.options[sel.selectedIndex].dataset.price);
+      let total = weight * pricePerKg;
+      const extras = document.getElementsByClassName('extra');
+      for (let i = 0; i < extras.length; i++) {
+        if (extras[i].checked) total += parseFloat(extras[i].value);
+      }
+      document.getElementById('total').textContent = total > 0 ? `Total: ₹${total.toFixed(2)}` : '';
+    }
+
+    function highlightExtras() {
+      const ebox = document.querySelector('.extras');
+      ebox.style.background = '#fff3e0';
+    }
+  </script>
+</body>
+</html>

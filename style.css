@@ -3,13 +3,13 @@ body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #f5f7fb 0%, #e8f4fd 100%);
+  background: linear-gradient(135deg, #ffd1ff 0%, #ffe1ff 100%);
   color: #222;
   line-height: 1.6;
 }
 
 header {
-  background: linear-gradient(135deg, #eb1f1f 0%, #d11717 100%);
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
   color: #fff;
   padding: 30px 20px;
   text-align: center;

@@ -1,29 +1,31 @@
 <!DOCTYPE html>
+<!-- Experiment 1 UI: dark theme -->
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Event Registration & Promotional Portal</title>
+  <title>Event Registration &amp; Promotional Portal - Dark Theme</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background:#f5f7fb; color:#222; }
-    header { background:#1f6feb; color:#fff; padding:20px 16px; text-align:center; }
-    .container { max-width:900px; margin:24px auto; background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08); overflow:hidden; }
+    /* dark-mode experiment UI */
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background:#222; color:#eee; }
+    header { background:#004d40; color:#fff; padding:20px 16px; text-align:center; }
+    .container { max-width:900px; margin:24px auto; background:#333; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.3); overflow:hidden; }
     .media { padding:16px; display:flex; flex-direction:column; gap:12px; align-items:center; }
-    img.banner { width:100%; height:auto; border-radius:6px; max-height:320px; object-fit:cover; }
+    img.banner { width:100%; height:auto; border-radius:6px; max-height:320px; object-fit:cover; filter:brightness(0.9); }
     .content { padding:16px; display:flex; gap:24px; flex-wrap:wrap; }
     form { flex:1 1 380px; min-width:280px; }
-    .info { flex:1 1 380px; min-width:260px; background:#f0f6ff; padding:12px; border-radius:6px; }
-    label { display:block; margin-top:12px; font-weight:600; }
+    .info { flex:1 1 380px; min-width:260px; background:#444; padding:12px; border-radius:6px; color:#eee; }
+    label { display:block; margin-top:12px; font-weight:600; color:#ddd; }
     input[type="text"], input[type="email"], input[type="date"], select, textarea, input[type="file"] {
-      width:100%; padding:8px; margin-top:6px; border:1px solid #cfd8e3; border-radius:4px; box-sizing:border-box;
+      width:100%; padding:8px; margin-top:6px; border:1px solid #666; border-radius:4px; box-sizing:border-box; background:#555; color:#eee;
     }
     .radio-group { display:flex; gap:12px; margin-top:6px; align-items:center; }
     textarea { min-height:100px; resize:vertical; }
-    button[type="submit"] { background:#1f6feb; color:#fff; border:none; padding:10px 16px; border-radius:6px; cursor:pointer; margin-top:14px; font-weight:700; }
-    .required { color:#d00; margin-left:4px; }
-    .small { font-size:0.9rem; color:#444; margin-top:8px; }
-    .success { background:#e6ffef; border-left:4px solid #1fb97f; padding:8px; margin-top:12px; border-radius:4px; }
-    footer { text-align:center; padding:12px; color:#666; font-size:0.9rem; }
+    button[type="submit"] { background:#00796b; color:#fff; border:none; padding:10px 16px; border-radius:6px; cursor:pointer; margin-top:14px; font-weight:700; }
+    .required { color:#ff8a65; margin-left:4px; }
+    .small { font-size:0.9rem; color:#ccc; margin-top:8px; }
+    .success { background:#1b5e20; border-left:4px solid #4caf50; padding:8px; margin-top:12px; border-radius:4px; color:#c8e6c9; }
+    footer { text-align:center; padding:12px; color:#bbb; font-size:0.9rem; background:#111; }
   </style>
 </head>
 <body>
