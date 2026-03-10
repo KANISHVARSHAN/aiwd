@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Event Registration Form</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body{font-family:Arial,sans-serif;background:#f0f4f8;margin:0;padding:20px;}
+    .container{max-width:500px;margin:40px auto;padding:20px;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+    label{display:block;margin-top:12px;font-weight:600;}
+    input{width:100%;padding:8px;margin-top:6px;border:1px solid #ccc;border-radius:4px;box-sizing:border-box;}
+    button{margin-top:16px;padding:10px 20px;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;}
+    button:disabled{background:#ccc;cursor:not-allowed;}
+    .message{margin-top:12px;font-weight:700;}
+    .error{color:#c62828;}
+    .success{color:#2e7d32;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Register for Event</h1>
+    <form id="regForm">
+      <label>Participant Name</label>
+      <input type="text" id="name" />
+
+      <label>Email</label>
+      <input type="text" id="email" />
+
+      <label>Event Name</label>
+      <input type="text" id="eventName" readonly />
+
+      <label>Mobile Number</label>
+      <input type="text" id="mobile" />
+
+      <button type="submit" id="submitBtn">Submit</button>
+      <button type="button" id="resetBtn">Reset</button>
+    </form>
+    <div id="msg" class="message"></div>
+  </div>
+
+  <script>
+    $(function(){
+      // populate eventName from query
+      const params = new URLSearchParams(window.location.search);
+      const ev = params.get('event');
+      if(ev){ $('#eventName').val(ev); }
+
+      $('#regForm').submit(function(e){
+        e.preventDefault();
+        $('.message').text('').removeClass('error success');
+        $('input').css('borderColor','');
+        let name=$('#name').val().trim();
+        let email=$('#email').val().trim();
+        let eventName=$('#eventName').val().trim();
+        let mobile=$('#mobile').val().trim();
+        let valid=true;
+        if(!name){ valid=false; $('#msg').text('Name required').addClass('error'); $('#name').css('borderColor','#c62828'); }
+        else if(!email||!/^\S+@\S+\.\S+$/.test(email)){ valid=false; $('#msg').text('Valid email required').addClass('error'); $('#email').css('borderColor','#c62828'); }
+        else if(!mobile||!/^\d{10,}$/.test(mobile)){ valid=false; $('#msg').text('Valid mobile required').addClass('error'); $('#mobile').css('borderColor','#c62828'); }
+        if(valid){
+          $('#msg').text('Registration Successful for '+name).addClass('success');
+          $('#submitBtn').prop('disabled',true).text('Registered');
+        }
+      });
+
+      $('#resetBtn').click(function(){
+        $('#regForm')[0].reset();
+        $('#msg').text('').removeClass('error success');
+        $('input').css('borderColor','');
+        $('#submitBtn').prop('disabled',false).text('Submit');
+      });
+    });
+  </script>
+</body>
+</html>

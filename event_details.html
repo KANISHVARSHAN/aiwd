@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Details</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body{font-family:Arial,sans-serif;background:#f7f7f7;margin:0;padding:20px;}
+    .event{background:#fff;border:1px solid #ccc;padding:16px;margin-bottom:16px;border-radius:6px;}
+    .details{display:none;margin-top:10px;background:#eef; padding:10px;border-radius:4px;}
+    .selected{background:#cce5ff;}
+    h3.highlight{color:#0056b3;}
+    button{margin-top:8px;padding:6px 12px;cursor:pointer;}
+  </style>
+</head>
+<body>
+  <h1>Upcoming Events</h1>
+  <div class="event">
+    <h3>Hackathon 2026</h3>
+    <p>Date: April 10, 2026</p>
+    <div class="details">
+      <p>24-hour coding event with prizes.</p>
+      <button class="register">Register</button>
+    </div>
+    <button class="toggle">Show Details</button>
+  </div>
+  <div class="event">
+    <h3>AI Workshop</h3>
+    <p>Date: May 5, 2026</p>
+    <div class="details">
+      <p>Hands-on learning with AI tools.</p>
+      <button class="register">Register</button>
+    </div>
+    <button class="toggle">Show Details</button>
+  </div>
+  <div class="event">
+    <h3>Tech Expo</h3>
+    <p>Date: June 20, 2026</p>
+    <div class="details">
+      <p>Exhibition of latest tech projects.</p>
+      <button class="register">Register</button>
+    </div>
+    <button class="toggle">Show Details</button>
+  </div>
+
+  <script>
+    $(function(){
+      $('.toggle').click(function(){
+        const eventDiv = $(this).closest('.event');
+        eventDiv.find('.details').slideToggle();
+        // toggle button text
+        const txt = $(this).text() === 'Show Details' ? 'Hide Details' : 'Show Details';
+        $(this).text(txt);
+        // highlight selected event
+        $('.event').removeClass('selected');
+        eventDiv.addClass('selected');
+        // traverse to h3 and highlight
+        eventDiv.find('h3').addClass('highlight');
+        // alert title
+        alert(eventDiv.find('h3').text());
+      });
+
+      $('.register').click(function(){
+        const title = $(this).closest('.event').find('h3').text();
+        // redirect with query param
+        window.location.href = 'event_registration.html?event=' + encodeURIComponent(title);
+      });
+    });
+  </script>
+</body>
+</html>
